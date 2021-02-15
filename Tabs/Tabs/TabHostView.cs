@@ -366,6 +366,15 @@ namespace Sharpnado.Tabs
 
                     break;
 
+
+                case NotifyCollectionChangedAction.Reset:
+                    for (int index = Tabs.Count - 1; index >= 0; index--)
+                    {
+                        Tabs.RemoveAt(index);
+                    }
+
+                    break;
+
                 default:
                     Console.WriteLine("Warning: TabHostView ItemsSource only support Add, Remove and Reset actions");
                     break;
@@ -606,9 +615,16 @@ namespace Sharpnado.Tabs
 
                     break;
 
+                case NotifyCollectionChangedAction.Reset:
+                    foreach (var tab in Tabs)
+                    {
+                        OnChildRemoved(tab);
+                    }
+
+                    break;
+
                 case NotifyCollectionChangedAction.Move:
                 case NotifyCollectionChangedAction.Replace:
-                case NotifyCollectionChangedAction.Reset:
                 default:
                     throw new NotSupportedException();
             }
@@ -906,7 +922,7 @@ namespace Sharpnado.Tabs
         {
             if (_selectableTabs.Count == 0)
             {
-                SelectedIndex = 0;
+                SelectedIndex = -1;
                 return;
             }
 
